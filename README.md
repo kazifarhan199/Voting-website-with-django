@@ -1,4 +1,5 @@
 # Voting site
+Voting project to create pols and voting, Users can vote as well as create new pools
 
 ## Quic starte guid 
 step 1 : run "pip install -r requirements.txt"<br>
