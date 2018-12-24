@@ -1,0 +1,149 @@
+{% extends 'header.html'%}
+{%block content%}
+<center>
+    {% if time_left%}
+    <div class="columns" style="margin: 0px; padding: 20px; ">
+    <dir class="column">
+        <section class="hero is-small is-black" style="border-radius: 10px;max-width: 450px">
+            <div class="hero-body">
+                <center>
+    <h1  class="title">Voting Ending in </h1>
+    <h1 style="color: red;" class="title" id="timer">{{time_left}}</h1>
+                </div>
+        </section>
+    </dir>
+</div>
+    {%endif%}
+</center>
+<script>
+    var r = "{{time_left}}";
+    var date = r.split(",");
+
+    try{
+    var time = date[1].split(":");
+
+    var days = parseInt(date[0]);
+    var hours = parseInt(time[0]);
+    var min = parseInt(time[1]);
+    var sec = parseInt(time[2]);
+    }
+    catch (e){
+     var time = date[0].split(":");
+
+    var days = '';
+    var hours = parseInt(time[0]);
+    var min = parseInt(time[1]);
+    var sec = parseInt(time[2]);   
+    }
+
+
+    var x = setInterval(function() {
+        if (sec <= 0) {
+            sec = 60;
+            min -= 1;
+            if (min <= 0) {
+                hours -= 1;
+                min = 60;
+                if (hours <= 0) {
+                    if (days>0){
+                        days -= 1;
+                        hours = 24;
+                    }
+                }
+            }
+        }
+        sec -= 1;
+        if (days!=''){
+        document.getElementById('timer').innerHTML = days + " Days, " + hours + ":" + min + ":" + sec
+        }
+        else{
+        document.getElementById('timer').innerHTML = hours + ":" + min + ":" + sec        
+        }
+
+    }, 1000);
+</script>
+<div class="columns" style="padding-left: 10px">
+    {% for option in options %} 
+    {% if options.object_list.count > 4 %}
+    <div class="column is-one-fifth" style="margin: 0px; padding: 20px; ">
+    {%else%}
+    <div class="column " style="margin: 0px; padding: 20px; ">
+    {%endif%}
+        <div class="card" style="border-radius: 17px;">
+            <div style="background-color: #181A1C;border-radius: 17px 17px 0px 0px;padding: 5px">
+                <p style="color: #abcdce; padding: 20px;text-align: center;font-size: 30px">{{option.name}} </p>
+            </div>
+            <div class="card-image">
+                <figure class="image is-4by4">
+                    <center>
+                        <img style="max-height: 340px;width: auto;padding: 15px" class="my-image" src="{{option.image.url}}" alt="Placeholder image">
+                    </center>
+                </figure>
+            </div>
+            <div class="card-content">
+                <div class="content">
+                    <form method="post" action="{% url 'pols' title.id %}">
+                        {%csrf_token%}
+                        <!-- <input class="input" type="email" placeholder="Email" name="email" required> -->
+                        <br>
+                        <input style="display: none" name="name" value="{{option.name}}">
+                        <input style="display: none" name="title" value="{{title}}">
+                        <br>
+                        <center>
+                            <button type="submit" class="button is-primary is-large">{{option.vote}} &nbsp;&nbsp; Vote</button>
+                        </center>
+                    </form>
+                    <br> {% load humanize %}
+                    <center>
+                        {%if option.cost%}
+                            <p class="subtitle is-2">₹ {{option.cost|intcomma}} </p>
+                        {%endif%}
+                            <ul class="list">
+                                {% if option.detail1 %}
+                                <li>{{option.detail1|safe}}</li>
+                                {%endif%}                                
+                                {% if option.detail2 %}
+                                <li>{{option.detail2|safe}}</li>
+                                {%endif%}
+                                {% if option.detail3 %}
+                                <li>{{option.detail3|safe}}</li>
+                                {%endif%}
+                            </ul>
+                    </center>
+                    <br>
+
+                    <h1 style="text-align: center;font-size: 10px"> 
+        		      	{%if option.cost%}
+                        More Details at
+                        {%else%}
+                        Ads
+                        {%endif%}
+                        <a href="{{option.url}}" target="_blank" >
+        			      	<image style="width:50px;" class="my-image" src="{{option.button_url}}"/>
+                        </a>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="columns" style="margin: 0px; padding: 20px; ">
+    <dir class="column">
+        <section class="hero is-small is-black" style="border-radius: 4px">
+            <div class="hero-body">
+                <center>
+                    <h1 class="subtitle">We provide 100% anonymous voting on any topic you like</h1>
+                    <a href="{%url 'login'%}" class="button is-info">
+                        <center>
+                            <h1>Create Your own polls</h1>
+                        </center>
+                    </a>
+                </center>
+                <br>
+                <br>
+            </div>
+        </section>
+    </dir>
+</div>
+{%endblock%}

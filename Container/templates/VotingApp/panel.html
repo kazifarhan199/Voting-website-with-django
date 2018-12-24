@@ -1,0 +1,71 @@
+{%extends 'header.html'%} 
+{%block content%}
+<div class="card" style="background-color: #000;border-radius: 17px;padding: 20px;margin: 5%">
+    <h1 class="title" style="color:#fff">
+        <a style="color: #fff;font-size: 20px;padding: 10px;float: left;" href="{%url 'change-password'%}"  class=" is-danger"><b>Change Password</b></a>
+	  	<button style="font-size: 20px;float: right;" id="myBtn" class="button is-info"><b>+</b></button>
+        <br>
+	</h1>
+    <hr>
+    <ul class="list" style="color:#fff">
+        {% for title in titles %}
+        <li>
+            <a href="{%url 'titles' title.id %}" class="title" style="color:#fff">
+                <div style="background-color: #209cee;padding: 10px;border-radius: 7px;max-width: 600px">
+                    {{title}}
+                </div>
+            </a>
+            <br><br>
+        </li>
+        {%endfor%}
+    </ul>
+    <br><br><br><br><br><br>
+</div>
+<br><br><br><br>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <center>
+            <h1 class="title" style="padding-top: 10px;color: #fff;">Create a new Poll</h1>
+        </center>
+        {% include 'components/form.html' %}
+        <form method="post">
+            {%csrf_token%}
+            <hr>
+            <center>
+                <span class="title">
+                    Poll Title* : <br>
+                    <input required style="text-align: center;" autofocus  class="input is-primary" type="text" name="name">
+                </span>
+                <br><br>
+                <button class="button is-info" type="submit">Create</button>
+                <br><br>
+            </center>
+        </form>
+    </div>
+                            <div class="navbar-end">
+                            <a id="texttovoice" href="{%url 'change-password'%}" class="navbar-item ">
+                                <span> &nbsp;<b>Profile</b></span>  
+                            </a>
+                        </div>
+
+</div>
+<script>
+    var modal = document.getElementById('myModal');
+    var btn = document.getElementById("myBtn");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+{%endblock%}

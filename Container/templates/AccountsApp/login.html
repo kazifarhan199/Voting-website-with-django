@@ -1,0 +1,34 @@
+{%extends 'header.html'%} 
+{%block content%}
+<center>
+    <div class="card" style="background-color: #000;border-radius: 17px;padding: 20px;margin: 5%">
+        <h1 style="color: #fff" class="title">Login</h1>
+        <br>
+        {% include 'components/form.html' %}
+        <form method="post" style="padding: 10px">
+            {% csrf_token %}
+            <center>
+                <label for="id_username">Email*&nbsp;:&nbsp; </label>
+                <br>
+                <input style="max-width: 370px" type="email" class="input" name="username" autofocus maxlength="254" required id="id_username" />
+                <br>
+                <br>
+                <label for="id_password">Password*&nbsp;:&nbsp;</label>
+                <br>
+                <input style="max-width: 370px" type="password" class="input" name="password" required id="id_password" />
+            <br><br>
+            <center>
+                <button style="color:#fff" class="button is-primary"><b>Login</b></button>
+            </center>
+                <a style="float: right;" href="{% url 'password_reset' %}">Forgot Password</a>
+                <br><br><hr>
+                <a href="{% url 'register'%}" class="subtitle">
+                    <h1 style="color: #fff" class="title">Register</h1>
+                </a>
+                <br>
+            </center>
+        </form>
+    </div>
+</center>
+<br><br> 
+{%endblock%}

@@ -1,0 +1,42 @@
+{%extends 'header.html'%} 
+{%block content%}
+<center>
+    <div class="card" style="background-color: #000;border-radius: 17px;padding: 20px;margin: 5%">
+        <h1 style="color: #fff" class="title">Register</h1>
+        <br>
+        {% include 'components/form.html' %}
+        <form method="post" style="padding: 10px" id="form">
+            {% csrf_token %}
+            <center>
+                <label for="id_username">Email*&nbsp;:&nbsp; </label>
+                <br>
+                <input style="max-width: 370px" type="email" class="input" name="username" autofocus maxlength="254" required id="id_username" />
+                <br>
+                <br>
+                <label for="id_password">Password*&nbsp;:&nbsp;</label>
+                <br>
+                <input style="max-width: 370px" type="password" class="input" name="password1" required id="id_password" />
+                <br>
+                <label for="id_password">Re-Password*&nbsp;:&nbsp;</label>
+                <br>
+                <input style="max-width: 370px" type="password" class="input" name="password2" required id="re_id_password" />
+                <br>
+                <br>
+                <button style="color:#000" type="submit" class="button is-primary">Register</button>
+            </center>
+            <br>
+        </form>
+        <center>
+            <br>
+            <hr>
+            <br>
+            <a href="{% url 'login'%}">
+                <h1 style="color: #fff" class="title">Login</h1>
+            </a>
+            <br>
+        </center>
+    </div>
+</center>
+<br>
+<br>
+{%endblock%}

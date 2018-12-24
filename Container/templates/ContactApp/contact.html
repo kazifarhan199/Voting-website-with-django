@@ -1,0 +1,27 @@
+{%extends 'header.html'%}
+
+{%block content%}
+<center>
+    <div class="card" style="background-color: #000;border-radius: 17px;padding: 20px;margin: 5%">
+        <!-- <h1 style="color: #fff" class="title">Contact us</h1> -->
+        <br>
+        {% include 'components/form.html' %}
+
+
+{% load crispy_forms_tags %}
+<style type="text/css">
+    #id_email{width: 100%;min-height:20px;border-radius: 5px;font-size: 20px;padding: 5px 7px;margin-bottom: 14px}
+
+    #id_message{width: 100%;min-height:20px;border-radius: 5px;font-size: 20px}
+</style>
+
+<form method="post" >
+{%csrf_token%}
+{{form|crispy}}
+<br>
+<button type="submit" class="button is-info">submit</button>
+</form>
+    </div>
+</center>
+<br><br> 
+{%endblock%}

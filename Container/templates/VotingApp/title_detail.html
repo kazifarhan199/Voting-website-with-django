@@ -1,0 +1,247 @@
+{%extends 'header.html'%} {%block content%}
+<script type="text/javascript">
+    var count = 0;
+</script>
+<div class="card" style="background-color: #000;border-radius: 17px;padding: 20px;margin: 5%">
+    <h1 style="color: #fff" class="title">
+        {%if time_left %}
+            <b class="title">Ending on {{time_left}}</b>
+            <a href="{%url 'pols' title.id%}" style="float: right;" class="button is-info">
+                Go to
+            </a>
+            <br>
+            <br>
+        {%else%}
+
+            <div style="font-size: 20px;" class="title">
+                {% include 'components/form.html' %}
+                <form  method="post" id='title-edit-form'  action="{%url 'titleEdit' title.id %}">
+                    <input type="text" style="margin: 10px;max-width: 370px;" class="input" name="title" value="{{object}}">
+                    <button style="margin: 10px" onclick="TitleEdit()" class="button is-info" >Save</button >
+                    <a style="margin: 10px;float: right;" class="button is-info" href="{%url 'pols' title.id %}">PreView</a>
+                    <br>
+                    {%csrf_token%}
+<!--                     <h2 style="margin: 10px;">
+                        Ending in 
+                        <input  class="input" style="max-width: 70px;decoration:none; " min="1" type="number" name="end_in">
+                         Days
+                    <h2>
+                    <br>
+                    <button type="submit" style="float: right" class="button is-info" >Publish</button> -->
+                </form>
+            </div>
+            <script type="text/javascript">
+                function TitleEdit(){
+                    document.getElementById('title-edit-form').submit()
+                }
+            </script>
+        {%endif%}
+    </h1>
+    <hr>
+    <ul style="color:#fff">
+        {%if time_left %}
+        <li>
+            <h1 class="title" style="color:#fff;float: right;padding-right: 50px">Votes</h1>
+        </li>
+        <br>
+        {%endif%}
+        <br>
+        <script type="text/javascript">
+        var count = 0;
+        </script>
+        {%for option in options%}
+        <li>
+            <span class="title" style="color:#fff">
+                {{option}}
+            </span> 
+            {% if time_left%}
+            <span class="title" style="color:#fff;float: right;padding-right: 80px">
+                    {{option.vote}}
+                </span> 
+            {%else%}
+            <button onclick="editor('{{option.id}}')" style="float: right;" class="button is-info" class="editbutton">
+                Edit
+            </button>
+                    <br>
+                    <br>
+            <div class="modal option" id="{{option.id}}" style="padding-top: 50px">
+                <div class="modal-content">
+                    <button class="button is-info" style="position: fixed;z-index: 1;font-size: 15px;font-weight: bold;" onclick="editclose('{{option.id}}')">&times;</button>
+                    {% include 'components/form.html' %}
+                    <center>
+                    <form method="post" action="{% url 'edit' option.id %}" enctype="multipart/form-data">
+                        {%csrf_token%}
+                        <input type="" name="title" value="{{title.id}} " style="display: none">
+                        <h2 style="color: #000;">Image*:</h2>
+                        <img src="/Container/media/{{option.image}}" style="width: 100px">
+                        <input class="input" type="file" name="image" value="{{option.image}}" style="padding: 50px;margin: 7px">
+                        <br>
+                        <br>
+                        <h2 style="color: #000;">Name* :</h2>
+                        <input type="text" style="width: 85%;margin:0px 5px 0px 5px" name="name" value="{{option}}" required placeholder="Name " class="input">
+                        <br>
+                        <br>
+                        <h2 style="color: #000">Detail1 :</h2>
+                        <input type="text" style="width: 85%;margin:0px 5px 0px 5px" name="detail1" placeholder="Detail1 " value="{{option.detail1}}" class="input">
+                        <h2 style="color: #000">Detail2 :</h2>
+                        <input type="text" style="width: 85%;margin:0px 5px 0px 5px" name="detail2" value="{{option.detail2}}" placeholder="Detail2" class="input">
+                        <h2 style="color: #000">Detail3 :</h2>
+                        <input type="text" style="width: 85%;margin:0px 5px 0px 5px" name="detail3" placeholder="Detail3" value="{{option.detail3}}" class="input">
+                        <br>
+                        <br>
+                        <h2 style="color: #000">Price if any :</h2>
+                        <input type="number" style="width: 85%;margin:0px 5px 0px 5px" name="cost" value="{{option.cost}}" placeholder="price" class="input">
+                        <br>
+                        <br>
+                        <button class="button is-info" style="float: right;">Save</button>
+                    </form>
+                    <a href="{% url 'deleteOption' option.id %}" class="button is-danger" style="float: left;">Delete</a>
+                    <br>
+                    <br>
+                    <br> 
+                    </center>
+                </div>
+            </div>
+            {%endif%}
+        </li>
+        {%endfor%} 
+        <br> 
+        <script type="text/javascript">
+            count += 1;
+        </script>
+        {%if time_left %} 
+        {%else%}
+            <li >
+                <br>
+            <center><button class="button is-info" id="myBtn" style="border-radius: 30px;display: none;">+ Add new option </button></center>
+            <br>
+            </li>
+        {%endif%}
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span style="position: fixed;z-index: 1" class="close">&times;</span>
+                <center>
+                    <h1 class="title" style="padding-top: 10px;color: #000;">Create an option</h1>
+                </center>
+                <hr>
+                <center>
+                    {% include 'components/form.html' %}
+                    <form method="post" enctype="multipart/form-data">
+                        {%csrf_token%}
+                        <h2 style="color: #000">Image*:</h2>
+                        <input class="input" type="file" name="image" required style="padding: 50px;margin: 7px">
+                        <br>
+                        <br>
+                        <input type="" name="title" value="{{title.id}} " style="display: none">
+                        <h2 style="color: #000">Name*:</h2>
+                        <input type="text" style="width: 85%;margin:0px 5px 0px 5px" name="name" required placeholder="Name " class="input">
+                        <br>
+                        <br>
+                        <h2 style="color: #000">Detail1 :</h2>
+                        <input type="text" style="width: 85%;margin:0px 5px 0px 5px" name="detail1" placeholder="Detail1 " class="input">
+                        <h2 style="color: #000">Detail2 :</h2>
+                        <input type="text" style="width: 85%;margin:0px 5px 0px 5px" name="detail2" placeholder="Detail2" class="input">
+                        <h2 style="color: #000">Detail3 :</h2>
+                        <input type="text" style="width: 85%;margin:0px 5px 0px 5px" name="detail3" placeholder="Detail3" class="input">
+                        <br>
+                        <br>
+                        <h2 style="color: #000">Price if any :</h2>
+                        <input type="number" style="width: 85%;margin:0px 5px 0px 5px" name="cost" placeholder="price" class="input">
+                        <br>
+                        <br>
+                        <button class="button is-info">Save</button>
+                        <br>
+                        <br>
+                        <br>
+                    </form>
+                </center>
+            </div>
+        </div>
+        <script type="text/javascript">
+            if (count < 5) {
+                document.getElementById("myBtn").style.display = "block";
+            }
+        </script>
+        <script>
+            var modal = document.getElementById('myModal');
+            var btn = document.getElementById("myBtn");
+            var span = document.getElementsByClassName("close")[0];
+
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        </script>
+    </ul>
+    <br><br> 
+
+    {% if not time_left%}
+               <div style="font-size: 20px;" class="title">
+                {% include 'components/form.html' %}
+                <form  method="post" id='title-edit-form'  action="{%url 'titleEdit' title.id %}">
+                    {%csrf_token%}
+                    <input type="text" style="margin: 10px;max-width: 370px;display: none" class="input" name="title" value="{{object}}">
+                    <h2 style="margin: 10px;color: #fff;">
+                        <span style="font-size: 25px;">Ending in </span> 
+                        <input  class="input" style="max-width: 50px;decoration:none; " min="1" max="99"  type="number" name="end_in" required>
+                         Days &nbsp;&nbsp;
+                    <button type="submit" style="float: right" class="button is-success" >Publish</button>
+                    <h2>
+                </form>
+            </div>
+    {%endif%}
+    <hr><br>
+    <a href="{%url 'dashboard'  %}" style="font-size: 20px;float: left;" class="button is-info"><b>Back</b></a>
+    <button id='delBtntitle' style="font-size: 20px;float: right;" class="button is-danger"><b>Delete</b></button>
+    
+    <div id="mydeletetitle" class="modal">
+        <div class="modal-content">
+            <span class="closer button is-danger" style="padding: 0px 10px;float: right;" onclick="closer4()">&times;</span>
+            <center>
+                <h1 class="title" style="padding-top: 10px;">Comferm you want to delete the title</h1>
+            </center>
+            <hr>
+            <center>
+                <button onclick="closer4()" class="button  is-info">Cancle</button>
+                <a href="{%url 'delete' object.id %}" style="margin-left: 5%" class="button is-danger ">conferm</a>
+            </center>
+        </div>
+    </div>
+    <script>
+        var modal4 = document.getElementById('mydeletetitle');
+        var btn4 = document.getElementById("delBtntitle");
+
+        btn4.onclick = function() {
+            modal4.style.display = "block";
+        }
+        function closer4() {
+            modal4.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal4) {
+                modal4.style.display = "none";
+            }
+        }
+    </script>
+    <br><br><br>
+</div>
+<br><br><br><br>
+    
+<script type="text/javascript">
+    function editor(event) {
+        document.getElementById(event).style.display = "block";
+    }
+
+    function editclose(event) {
+        document.getElementById(event).style.display = "none";
+    }
+</script>
+{%endblock%}

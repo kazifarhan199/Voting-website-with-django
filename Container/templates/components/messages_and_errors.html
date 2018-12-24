@@ -1,0 +1,34 @@
+{%if error%}
+    <h3>
+        {{error}}
+    </h3> 
+    {%if this%}
+        <br>
+        <center>
+            <a class="button is-danger"  href="{%url 'titles' title.id%}" class="navbar-item ">
+                <h1 style="background-color: #ff3860;color: #fff">
+                    {{error}} | Go Back
+                </h1>
+            </a>
+        </center>
+    {%endif%} 
+{%endif%} 
+{%if message%}
+    <h3>
+        {{message}}
+    </h3> 
+{%endif%}
+{%if r_message%}
+    <h3 id="r_message">
+        {% for messag in r_message%}
+            {{messag}}
+        {% endfor %}
+    </h3> 
+{%endif%}
+    
+<script type="text/javascript">
+    setTimeout(
+        function() {
+            document.getElementById('r_message').style.display='none';
+    }, 3000);
+</script>

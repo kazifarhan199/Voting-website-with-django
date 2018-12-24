@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{% static 'icon.ico'%}" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{% static 'VotingRoot/css/mycss.css'%}">
+    <link rel="stylesheet" href="{% static 'VotingRoot/css/bulma_0_6_2.css'%}">
+    <title>Let's Choose</title>
+</head>
+
+<body background="{%static 'VotingRoot/img/main.jpg'%}">
+    <section class="hero is-black " style="background-color: #000">
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="{% url 'home'%}">
+                        <h1 style="color: #fff" class="subtitle" >
+                            Let's Vote
+                        </h1>
+                    </a>
+                    <span class="navbar-burger burger" data-target="navbarMenuHeroA" onclick="document.querySelector('.navbar-menu').classList.toggle('is-active'); document.querySelector('.navbar-burger').classList.toggle('is-active');">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </div>
+                <div id="navbarMenuHeroA" class="navbar-menu" style="background-color: #000">
+                    {% if user.is_authenticated %}
+                        <div class="navbar-end">
+                            <a id="texttovoice" href="{%url 'login'%}" class="navbar-item">
+                                <span> &nbsp;<b>Dashboard</b></span>  
+                            </a>
+                        </div>
+<!--                         <div class="navbar-end">
+                            <a id="texttovoice" href="{%url 'change-password'%}" class="navbar-item ">
+                                <span> &nbsp;<b>Profile</b></span>  
+                            </a>
+                        </div>
+ -->
+                        {%endif%}
+                         <div class="navbar-end">
+                            <a id="texttovoice" href="{%url 'contact-page'%}" class="navbar-item ">
+                                <span> &nbsp;<b>Contact us</b></span>  
+                            </a>
+                        </div>
+                    {% if user.is_authenticated %}
+                        <div class="navbar-end">
+                            <a id="texttovoice" href="{%url 'logout'%}" style="color: red;" class="navbar-item ">
+                                <span> &nbsp;Logout</span>  
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="navbar-end">
+                            <a id="texttovoice" href="{%url 'login'%}" class="navbar-item ">
+                                <span> &nbsp;Create new pole</span>  
+                            </a>
+                        </div>
+                        <br><br>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </section>
+    <div style="background-color: #000; border-radius: 0px 0px 5px 5px">
+    <br>
+        <h1 style="color:#fff; text-align: center;background-color: #000;padding-top: 3px" class="title">
+            {{title}}
+        </h1>
+        {% include 'components/messages_and_errors.html' %}
+        <br>
+
+    </div>
+    <br>
+    {% block content%} 
+    {%endblock%}
+    <hr>
+    <div style="padding: 15px">
+        <center>
+            <script type="text/javascript">
+            amzn_assoc_ad_type = "responsive_search_widget";
+            amzn_assoc_tracking_id = "thesimplewaya-21";
+            amzn_assoc_marketplace = "amazon";
+            amzn_assoc_region = "IN";
+            amzn_assoc_placement = "";
+            amzn_assoc_search_type = "search_widget";
+            amzn_assoc_width = "auto";
+            amzn_assoc_height = "auto";
+            amzn_assoc_default_search_category = "";
+            amzn_assoc_default_search_key = "{{title}}";
+            amzn_assoc_theme = "light";
+            amzn_assoc_bg_color = "FFFFFF";
+            </script>
+            <script src="//z-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&Operation=GetScript&ID=OneJS&WS=1&Marketplace=IN">
+            </script>
+        </center>
+    </div>
+    <br><br>
+</body>
+    <!--  <div >
+<section class="hero is-small is-black">
+  <div class="hero-body" >
+    <center>
+      <h1 class="title">About us</h1>
+    </center>
+  </div>
+</section>
+</div> -->
+
+</html>
